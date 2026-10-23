@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "niobium:schemas:provider-profile:v1",
+  "title": "ProviderProfile",
+  "type": "object",
+  "required": ["id", "protocol", "base_url"],
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "protocol": { "type": "string", "enum": ["openai_compatible", "anthropic", "gemini"] },
+    "base_url": { "type": "string", "format": "uri" },
+    "auth_mode": { "type": "string", "enum": ["none", "api_key", "custom_header", "oauth"] },
+    "auth_header": { "type": "string" },
+    "auth_prefix": { "type": "string" },
+    "default_model": { "type": "string" },
+    "extra_headers": { "type": "object", "additionalProperties": { "type": "string" } },
+    "models": { "type": "array", "items": { "$ref": "#/$defs/model_capability" } }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "model_capability": {
+      "type": "object",
+      "required": ["model_id"],
+      "properties": {
+        "model_id": { "type": "string" },
+        "provider_id": { "type": "string" },
+        "context_limit": { "type": "integer", "minimum": 0 },
+        "output_limit": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": true
+    }
+  }
+}

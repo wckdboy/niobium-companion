@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "niobium:schemas:performance-cue:v1",
+  "title": "PerformanceCue",
+  "type": "object",
+  "required": ["schema", "turn_id"],
+  "properties": {
+    "schema": { "const": 1 },
+    "turn_id": { "type": "string" },
+    "segment_id": { "type": "string" },
+    "expression": { "type": "string", "enum": ["neutral", "curious", "thinking", "amused", "concerned", "celebratory", "greeting", "attentive", "relaxed"] },
+    "intensity": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+    "gesture": { "type": "string", "enum": ["none", "small_nod", "small_head_tilt", "head_tilt", "wave", "explain_hands", "shrug", "lean_in", "lean_back"] },
+    "attention": { "type": "string", "enum": ["user", "screen", "away", "none"] },
+    "duration_ms": { "type": "integer", "minimum": 0, "maximum": 20000 }
+  },
+  "additionalProperties": true
+}

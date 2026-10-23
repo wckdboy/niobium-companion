@@ -1,0 +1,75 @@
+# ---- Godot ----
+# Godot 4 cache / imports. Imported resources are generated and must not be tracked.
+app/.godot/
+app/.godot/**/*
+*.import
+app/.godot/imported/
+app/.godot/shader_cache/
+app/.godot/uid_cache.bin
+
+# Export / build outputs
+app/build/
+app/export/
+*.apk
+*.aab
+*.dmg
+*.pkg
+*.AppImage
+*.deb
+*.rpm
+*.zip
+*.xcarchive
+
+# ---- Secrets and credentials ----
+# Never commit API keys, tokens, OAuth client secrets or signing keystores.
+.env
+.env.*
+*.env
+secrets/
+secrets.*
+*.keystore
+*.jks
+*.p12
+app/secrets/
+*.local.json
+
+# ---- Downloaded model / asset files (large, provenance-tracked elsewhere) ----
+*.gguf
+*.onnx
+*.safetensors
+*.bin
+models/
+models_local/
+app/assets/downloaded/
+fixtures/downloaded/
+
+# ---- Platform build dirs ----
+native/android/.gradle/
+native/android/build/
+native/android/app/build/
+native/android/local.properties
+native/android/app/.cxx/
+
+# ---- OS / editor noise ----
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.user
+*.user.os
+*.user.*.os
+
+# ---- Node (worker) ----
+node_modules/
+worker/node_modules/
+worker/dist/
+worker/.env
+
+# ---- Test output ----
+app/tests/output/
+test-output/
+*.log

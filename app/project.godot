@@ -1,0 +1,36 @@
+; Niobium — Godot 4.7 project
+; Pinned to 4.7.2-stable (ed1daf0bf). Do not open with a moving version.
+
+config_version=5
+
+[application]
+
+config/name="Niobium"
+config/description="Private AI companion and creation workbench"
+config/version="0.1.0"
+run/main_scene="res://scenes/main/main.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
+config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=800
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
+window/handheld/orientation=1
+
+[rendering]
+
+renderer/rendering_method="forward_plus"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.06, 0.04, 0.10, 1)
+anti_aliasing/quality/msaa_3d=2
+
+[audio]
+
+driver/enable_input=true
+
+[gui]
+
+theme/default_font_multichannel_signed_distance_field=true
