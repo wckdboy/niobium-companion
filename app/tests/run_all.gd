@@ -16,6 +16,7 @@ const MODULES := [
 	"res://tests/test_validation.gd",
 	"res://tests/test_gaze.gd",
 	"res://tests/test_rig.gd",
+	"res://tests/test_gltf.gd",
 ]
 
 

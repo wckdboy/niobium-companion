@@ -7,11 +7,13 @@ extends Node3D
 
 signal camera_mode_changed(mode: String)
 
-var rig: EngineeringRig
+var rig: RiggedAvatar
 var director := AnimationDirector.new()
 var viseme_profile := VisemeProfile.default_profile()
 var timeline := VisemeTimeline.new()
 var playback := AudioPlayback.new()
+
+const AVATAR_PATH := "res://assets/characters/violet.glb"
 
 var camera: Camera3D
 var _camera_target_pos := Vector3.ZERO
@@ -41,11 +43,41 @@ func _ready() -> void:
 
 
 func _build_rig() -> void:
-	rig = EngineeringRig.new()
-	rig.set_name("EngineeringRig")
+	rig = RiggedAvatar.new()
+	rig.set_name("RiggedAvatar")
 	add_child(rig)
-	rig.build()
+	if not rig.load_avatar(AVATAR_PATH):
+		push_error("CompanionStage: failed to load authored avatar " + AVATAR_PATH)
+		return
+	_apply_toon_shader(rig)
 	rig.reset_pose()
+
+
+func _apply_toon_shader(avatar: RiggedAvatar) -> void:
+	var toon := load("res://shaders/toon.gdshader")
+	for mi in _find_meshes(avatar):
+		var mesh_name: String = (mi as MeshInstance3D).name
+		var is_surface := mesh_name.contains("Body") or mesh_name.contains("Outfit") or mesh_name.contains("Hair")
+		if not is_surface:
+			continue
+		var mat := (mi as MeshInstance3D).get_active_material(0)
+		var color := Color(0.24, 0.14, 0.34)
+		if mat is BaseMaterial3D:
+			color = (mat as BaseMaterial3D).albedo_color
+		var sm := ShaderMaterial.new()
+		sm.shader = toon
+		sm.set_shader_parameter("base_color", color)
+		sm.set_shader_parameter("rim_color", Color(0.25, 0.85, 0.9))
+		(mi as MeshInstance3D).material_override = sm
+
+
+static func _find_meshes(node: Node) -> Array:
+	var out: Array = []
+	if node is MeshInstance3D:
+		out.append(node)
+	for c in node.get_children():
+		out.append_array(_find_meshes(c))
+	return out
 
 
 func _build_camera() -> void:

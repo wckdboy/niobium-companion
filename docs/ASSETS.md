@@ -2,12 +2,12 @@
 
 ## Honest status
 
-The beautiful reference images are **concept art, not usable rigged models**. No authored
-production character exists in this repository. The character you see in the first slice is a
-**procedural engineering rig** built in GDScript (`app/scripts/rig/engineering_rig.gd`): a
-humanoid skeleton with primitive-mesh body parts and procedural face morphs. It exists to
-exercise the animation, speech and camera systems with a *legitimately rigged, animatable*
-figure. It is **explicitly not final art** and is never claimed as such.
+An authored character **"Violet"** now exists (see `docs/BLENDER_MCP.md`): a Blender-built
+humanoid (armature matching `RigProfile.HUMAN_BONES` + finger bones, organic Skin-modifier
+body, face meshes, hair, bodysuit, and face shape keys) exported to glTF and loaded by Godot's
+`RiggedAvatar`. The source script (`avatars/blender/create_violet.py`) and `.blend` are in the
+repo. It is a **real authored base**, but not yet "stunning": no sculpt/texture detail, hair is
+a simple mesh, and lip viseme shape keys are not yet authored — those are open refinement tasks.
 
 ## The outstanding art task (open)
 

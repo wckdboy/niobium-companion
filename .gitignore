@@ -78,3 +78,5 @@ worker/.env
 app/tests/output/
 test-output/
 *.log
+
+avatars/generated/*.glb

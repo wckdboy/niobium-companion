@@ -1,0 +1,35 @@
+{
+  "id": "violet_v1",
+  "name": "Violet",
+  "asset_id": "niobium:character:violet-v1",
+  "license": "MIT (authored in-repo, procedural + Blender)",
+  "provenance": "Authored in Blender 4.5.3 via avatars/blender/create_violet.py; exported to glTF (avatars/generated/violet.glb).",
+  "rights_cleared": true,
+  "bones": [
+    "Hips", "Spine", "Chest", "Neck", "Head",
+    "Shoulder.L", "Shoulder.R", "UpperArm.L", "UpperArm.R",
+    "LowerArm.L", "LowerArm.R", "Hand.L", "Hand.R",
+    "UpperLeg.L", "UpperLeg.R", "LowerLeg.L", "LowerLeg.R",
+    "Foot.L", "Foot.R", "Eye.L", "Eye.R"
+  ],
+  "extra_bones": [
+    "Thumb.L.01", "Thumb.L.02", "Thumb.L.03", "Index.L.01", "Index.L.02", "Index.L.03",
+    "Middle.L.01", "Middle.L.02", "Middle.L.03", "Ring.L.01", "Ring.L.02", "Ring.L.03",
+    "Pinky.L.01", "Pinky.L.02", "Pinky.L.03",
+    "Thumb.R.01", "Thumb.R.02", "Thumb.R.03", "Index.R.01", "Index.R.02", "Index.R.03",
+    "Middle.R.01", "Middle.R.02", "Middle.R.03", "Ring.R.01", "Ring.R.02", "Ring.R.03",
+    "Pinky.R.01", "Pinky.R.02", "Pinky.R.03"
+  ],
+  "morphs": ["jaw_open", "blink_L", "blink_R", "smile", "frown", "brow_raise"],
+  "camera_anchors": ["portrait", "bust", "waist", "full"],
+  "visemes": {
+    "sil": {},
+    "A": { "jaw_open": 1.0 },
+    "E": { "jaw_open": 0.5, "lips_wide": 0.6 },
+    "I": { "jaw_open": 0.3, "lips_wide": 1.0 },
+    "O": { "jaw_open": 0.6, "lips_round": 0.8 },
+    "U": { "jaw_open": 0.3, "lips_round": 1.0 },
+    "F": { "jaw_open": 0.15, "lips_f": 0.8 },
+    "M": { "jaw_open": 0.1, "lips_close": 0.8 }
+  }
+}

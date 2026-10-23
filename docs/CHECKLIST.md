@@ -24,7 +24,7 @@ Last updated: **2026-10-23**
 | Pinned dependency proposal | ✅ | `docs/DEPENDENCIES.md` (Godot 4.7.2-stable `ed1daf0bf`, downloaded + checksummed). |
 | Engine/UI decision record | ✅ | `docs/ADR-001-engine-and-boundaries.md`. |
 | Platform build matrix | ✅ | `docs/ARCHITECTURE.md` § "Platform matrix" (targets vs. build-env reality). |
-| Real model/asset inventory | ✅ | `docs/ASSETS.md` (engineering rig only; no authored character yet). |
+| Real model/asset inventory | ✅ | `docs/ASSETS.md` + `docs/BLENDER_MCP.md`; authored Blender character "Violet" (glTF + .blend) in place. |
 | Full feature checklist | ✅ | This file. |
 | AIRI / godot-vrm audit vs. target | 🟡 | Notes in `docs/ARCHITECTURE.md`; runtime VRM load in exported apps not yet proven (needs device). |
 
@@ -57,8 +57,8 @@ and none of which is claimed.
 | Robust audio interruption + AEC/speaker tests | ⬜ | `device`. |
 | Expressive lip-sync | 🟡 | Viseme profile + audio-driven inference; `device` unverified. |
 | Camera modes, materials, motion library | 🟡 | Camera anchors + motion slots; authored materials not yet. |
-| Importer validation (malformed avatar survives) | 🟡 | Validation report type + glTF path; `unit` for report logic. |
-| Character source assets | 🚫 | None authored; outstanding art task in `docs/ASSETS.md`. |
+| Importer validation (malformed avatar survives) | 🟡 | `ValidationReport` type + glTF load path (`RiggedAvatar`); `unit` for report logic + glTF import (`test_gltf`). Atomic swap/rollback not yet exercised on-device. |
+| Character source assets | 🟡 | Blender-authored "Violet" (armature + organic body + face + hair + outfit + shape keys) in `avatars/blender/create_violet.py`, `.blend` + `.glb` generated. **Not yet "stunning"**: base proportions only, no sculpt/texture/lip-shape-keys; outstanding refinement task. |
 
 ## Gate 3 — Provider and conversation depth
 
