@@ -4,10 +4,10 @@
 
 The beautiful reference images are **concept art, not usable rigged models**. No authored
 production character exists in this repository. The character you see in the first slice is a
-**procedural engineering rig** built in GDScript (`app/assets/rig/`): a humanoid skeleton with
-primitive-mesh body parts and procedural face morphs. It exists to exercise the animation,
-speech and camera systems with a *legitimately rigged, animatable* figure. It is **explicitly
-not final art** and is never claimed as such.
+**procedural engineering rig** built in GDScript (`app/scripts/rig/engineering_rig.gd`): a
+humanoid skeleton with primitive-mesh body parts and procedural face morphs. It exists to
+exercise the animation, speech and camera systems with a *legitimately rigged, animatable*
+figure. It is **explicitly not final art** and is never claimed as such.
 
 ## The outstanding art task (open)
 

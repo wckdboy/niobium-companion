@@ -32,15 +32,21 @@ Last updated: **2026-10-23**
 
 | Item | Status | Verification / evidence |
 |---|---|---|
-| Load a legitimately usable rigged 3D character | 🟡 | Procedural engineering rig (`app/assets/rig/`), labelled temporary. Not final art. |
-| Bust ↔ full-body camera switch, one identity | 🟡 | Camera anchors implemented; device render unverified. |
-| Blend breathing, blinking, gaze, a gesture, one expression | 🟡 | Layered `AnimationDirector`; `unit`-tested state math, render unverified. |
-| Real provider credential → streamed response | 🟡 | OpenAI-compatible SSE adapter + fixtures; `live` unverified (no credentials). |
-| Speak response via real TTS | 🟡 | TTS interface + offline test synth; `live` TTS unverified. |
-| Drive mouth from played audio timeline | 🟡 | Sample-clock viseme mapping; `unit`-tested timing math. |
-| Interrupt speech, discard stale output | 🟡 | Cancellation/generation guard; `unit`-tested. |
-| Save + restore conversation across restart | 🟡 | JSON store; `unit`-tested. |
-| Timing/frame-time/memory evidence | ⬜ | Requires device capture; harness documented in `docs/TESTING.md`. |
+| Load a legitimately usable rigged 3D character | 🟡 | Procedural engineering rig (`app/scripts/rig/`), labelled temporary (not final art). `unit`: 21 humanoid bones, 8 face blend shapes, 4 camera anchors build headless. |
+| Bust ↔ full-body camera switch, one identity | 🟡 | Camera anchors + `set_camera_mode` implemented; `unit`-checked anchors exist; device render unverified. |
+| Blend breathing, blinking, gaze, a gesture, one expression | 🟡 | Layered `AnimationDirector`; `unit`: morph clamp [0,1], gesture lifecycle→neutral, blink L==R. Render unverified. |
+| Real provider credential → streamed response | 🟡 | OpenAI-compatible SSE adapter; `fixture`: parser fragmentation/UTF-8/tool deltas/errors. `live` unverified (no credentials). |
+| Speak response via real TTS | 🟡 | TTS interface + offline `TestTTS` (labelled dev synth); `unit`: session produces segments. `live` TTS unverified. |
+| Drive mouth from played audio timeline | 🟡 | Sample-clock viseme mapping; `unit`: `VisemeTimeline` interpolation. Audio route unverified. |
+| Interrupt speech, discard stale output | 🟡 | Cancellation/generation guard + sequencer; `unit`: interrupt stores only pre-interrupt content, drops stale. |
+| Save + restore conversation across restart | 🟡 | JSON store; `unit`: persistence + search index rebuild across reopen. |
+| Timing/frame-time/memory evidence | ⬜ | Requires device capture; harness in `docs/TIMING.md`. |
+
+**Slice status:** the app boots headless-clean (10-frame smoke test, no errors) and the
+offline pipeline (LLM stream → TTS → sequenced audio → sample-clock visemes → interruption →
+persistence) is exercised end-to-end by fixtures. What remains unverified is **rendering,
+audio output, and device/live behaviour** — none of which this environment can produce, and
+none of which is claimed.
 
 ## Gate 2 — Production character and voice
 
@@ -102,8 +108,12 @@ Last updated: **2026-10-23**
 
 ## Next tasks (ordered)
 
-1. Finish procedural rig + `AnimationDirector` and get the app scene running headless-clean.
-2. Wire SSE streaming + offline test TTS into the `SpeechSession` turn lifecycle.
-3. Chat UI: streamed markdown, interrupt button, save/restore.
-4. Grow `run_all.gd` to cover each added unit; keep it green.
-5. Produce a device-test harness + exact "what remains unverified" list for Gate 1.
+1. Device/live verification of Gate 1 (Android arm64 + one desktop): real credential stream,
+   real TTS, speaker + AEC test, lip-sync offset, interruption latency, frame-time/memory
+   capture. See `docs/TESTING.md` + `docs/TIMING.md`.
+2. Wire the live `OpenAICompatibleAdapter` (already implemented) into `main.gd` behind a
+   provider picker + `CredentialStore`, replacing the scripted demo for credentialed runs.
+3. Anthropic + Gemini adapters (interfaces exist; `ProviderCatalog` marks their protocols).
+4. Authored character asset (outstanding art task, `docs/ASSETS.md`) or a reviewed VRM/glTF
+   import path with runtime-load-in-exported-app proof.
+5. Rich chat (markdown/code highlight, branch/edit/regenerate, attachments) behind the UI gate.

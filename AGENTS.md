@@ -60,7 +60,7 @@ app/scripts/storage/    document store, migrations, indexes
 app/scripts/companion/  companion orchestration (speech session, personality, memory glue)
 app/scripts/ui/         chat UI, stage UI
 app/scenes/             main, companion stage, chat
-app/assets/rig/         the procedural engineering rig (temporary, labelled)
+app/scripts/rig/        the procedural engineering rig (temporary, labelled)
 app/tests/              GDScript tests
 ```
 
