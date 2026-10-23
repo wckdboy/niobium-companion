@@ -22,6 +22,7 @@ func build() -> void:
 	_build_body()
 	_build_head()
 	_build_eyes()
+	_build_face()
 	_build_cameras()
 
 
@@ -107,7 +108,7 @@ func _add_bone(name: String, rest: Vector3, parent: String) -> void:
 
 
 func _build_body() -> void:
-	var mat_body := _material(Color(0.20, 0.10, 0.30), 0.55)
+	var mat_body := _toon_material(Color(0.20, 0.10, 0.30))
 	# Torso (capsule spanning spine/chest).
 	_attach_capsule("Chest", Vector3(0, -0.05, 0), 0.20, 0.55, mat_body)
 	# Pelvis.
@@ -127,47 +128,81 @@ func _build_body() -> void:
 func _build_head() -> void:
 	head_mesh = MeshInstance3D.new()
 	head_mesh.set_name("Head")
-	head_mesh.mesh = _build_head_mesh(0.14)
-	head_mesh.material_override = _material(Color(0.24, 0.14, 0.34), 0.5)
+	head_mesh.mesh = _build_head_mesh(0.16)
+	head_mesh.material_override = _toon_material(Color(0.24, 0.14, 0.34))
 	var attach := _attach_node("Head", head_mesh, Transform3D(Basis.IDENTITY, Vector3(0, 0, 0)))
 
 
 func _build_eyes() -> void:
-	var mat_eye_white := _material(Color(0.95, 0.95, 0.92), 0.2)
-	var mat_iris := _material(Color(0.20, 0.55, 0.95), 0.1)
-	eye_l = _eye("Eye.L", mat_eye_white, mat_iris)
-	eye_r = _eye("Eye.R", mat_eye_white, mat_iris)
+	var mat_eye_white := _material(Color(0.97, 0.97, 0.95), 0.15)
+	var mat_iris := _material(Color(0.18, 0.55, 0.98), 0.1)
+	var mat_pupil := _material(Color(0.02, 0.02, 0.05), 0.1)
+	eye_l = _eye("Eye.L", mat_eye_white, mat_iris, mat_pupil)
+	eye_r = _eye("Eye.R", mat_eye_white, mat_iris, mat_pupil)
 
 
-func _eye(bone: String, white: Material, iris: Material) -> Node3D:
+func _build_face() -> void:
+	# Mouth: a dark flattened ellipse at the front-bottom of the face.
+	var mouth := MeshInstance3D.new()
+	var mm := SphereMesh.new()
+	mm.radius = 0.035
+	mm.height = 0.07
+	mouth.mesh = mm
+	mouth.material_override = _material(Color(0.10, 0.03, 0.12), 0.3)
+	mouth.scale = Vector3(1.4, 0.35, 0.5)
+	_attach_node("Head", mouth, Transform3D(Basis.IDENTITY, Vector3(0, -0.055, 0.14)))
+
+	# Brows: two dark thin shapes above the eyes.
+	for side in [-1.0, 1.0]:
+		var brow := MeshInstance3D.new()
+		var bm := CapsuleMesh.new()
+		bm.radius = 0.011
+		bm.height = 0.09
+		brow.mesh = bm
+		brow.material_override = _material(Color(0.08, 0.05, 0.12), 0.3)
+		brow.rotation_degrees = Vector3(0, 0, side * -14.0)
+		_attach_node("Head", brow, Transform3D(Basis.IDENTITY, Vector3(side * 0.052, 0.085, 0.13)))
+
+
+func _eye(bone: String, white: Material, iris: Material, pupil: Material) -> Node3D:
 	var group := Node3D.new()
 	group.set_name("Eye")
 	var ball := MeshInstance3D.new()
 	var sm := SphereMesh.new()
-	sm.radius = 0.028
-	sm.height = 0.056
+	sm.radius = 0.048
+	sm.height = 0.096
 	ball.mesh = sm
 	ball.material_override = white
 	group.add_child(ball)
-	var pupil := MeshInstance3D.new()
+	var iris_mi := MeshInstance3D.new()
+	var im := SphereMesh.new()
+	im.radius = 0.024
+	im.height = 0.048
+	iris_mi.mesh = im
+	iris_mi.material_override = iris
+	iris_mi.position = Vector3(0, 0, 0.035)
+	iris_mi.scale = Vector3(1.0, 1.15, 0.4)
+	group.add_child(iris_mi)
+	var pupil_mi := MeshInstance3D.new()
 	var pm := SphereMesh.new()
-	pm.radius = 0.012
-	pm.height = 0.024
-	pupil.mesh = pm
-	pupil.material_override = iris
-	pupil.position = Vector3(0, 0, 0.02)
-	group.add_child(pupil)
+	pm.radius = 0.011
+	pm.height = 0.022
+	pupil_mi.mesh = pm
+	pupil_mi.material_override = pupil
+	pupil_mi.position = Vector3(0, 0, 0.052)
+	group.add_child(pupil_mi)
 	_attach_node(bone, group, Transform3D.IDENTITY)
 	return group
 
 
 func _build_cameras() -> void:
-	# Named anchors; the camera rig moves to these. Character faces +Z.
+	# Named anchors; the camera rig moves to these. Character faces +Z. The full-body anchor
+	# sits far enough back to frame the whole ~1.8-unit figure at the 40° vertical FOV.
 	var defs := {
-		"portrait": Transform3D(Basis.IDENTITY, Vector3(0, 1.66, 0.55)),
+		"portrait": Transform3D(Basis.IDENTITY, Vector3(0, 1.70, 0.55)),
 		"bust": Transform3D(Basis.IDENTITY, Vector3(0, 1.45, 0.95)),
-		"waist": Transform3D(Basis.IDENTITY, Vector3(0, 1.05, 1.55)),
-		"full": Transform3D(Basis.IDENTITY, Vector3(0, 0.85, 2.1)),
+		"waist": Transform3D(Basis.IDENTITY, Vector3(0, 1.10, 1.7)),
+		"full": Transform3D(Basis.IDENTITY, Vector3(0, 0.95, 2.7)),
 	}
 	for name in defs:
 		var m := Marker3D.new()
@@ -202,6 +237,14 @@ func _material(color: Color, roughness: float) -> StandardMaterial3D:
 	m.albedo_color = color
 	m.roughness = roughness
 	m.metallic = 0.0
+	return m
+
+
+func _toon_material(color: Color) -> ShaderMaterial:
+	var m := ShaderMaterial.new()
+	m.shader = load("res://shaders/toon.gdshader")
+	m.set_shader_parameter("base_color", color)
+	m.set_shader_parameter("rim_color", Color(0.25, 0.85, 0.9))
 	return m
 
 

@@ -25,6 +25,10 @@ const LOOK_AT := {
 	"full": Vector3(0, 0.9, 0),
 }
 
+# Lateral look offset (world units) so the character sits in the visible left portion of the
+# frame instead of being half-covered by the right-side chat panel.
+const CAMERA_LATERAL_OFFSET := 0.3
+
 
 func _ready() -> void:
 	_build_rig()
@@ -178,4 +182,5 @@ func _update_camera(delta: float) -> void:
 	if not is_instance_valid(camera):
 		return
 	camera.global_position = camera.global_position.lerp(_camera_target_pos, minf(1.0, delta * 6.0))
-	camera.look_at(_camera_look, Vector3.UP)
+	var look := _camera_look + Vector3(CAMERA_LATERAL_OFFSET, 0, 0)
+	camera.look_at(look, Vector3.UP)
