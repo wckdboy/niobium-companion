@@ -58,20 +58,26 @@ func _build_lights() -> void:
 	e.background_mode = Environment.BG_COLOR
 	e.background_color = Color(0.05, 0.03, 0.09)
 	e.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	e.ambient_light_color = Color(0.20, 0.16, 0.30)
-	e.ambient_light_energy = 1.0
+	e.ambient_light_color = Color(0.35, 0.30, 0.50)
+	e.ambient_light_energy = 1.2
 	env.environment = e
 	add_child(env)
 
 	var key := DirectionalLight3D.new()
-	key.rotation_degrees = Vector3(-40, -30, 0)
-	key.light_energy = 1.3
-	key.light_color = Color(0.85, 0.80, 1.0)
+	key.rotation_degrees = Vector3(-30, 0, 0)
+	key.light_energy = 2.5
+	key.light_color = Color(1.0, 0.95, 1.0)
 	add_child(key)
+
+	var fill := DirectionalLight3D.new()
+	fill.rotation_degrees = Vector3(0, 40, 0)
+	fill.light_energy = 1.2
+	fill.light_color = Color(0.7, 0.75, 1.0)
+	add_child(fill)
 
 	var rim := DirectionalLight3D.new()
 	rim.rotation_degrees = Vector3(-15, 150, 0)
-	rim.light_energy = 0.6
+	rim.light_energy = 1.1
 	rim.light_color = Color(0.25, 0.85, 0.9)
 	add_child(rim)
 

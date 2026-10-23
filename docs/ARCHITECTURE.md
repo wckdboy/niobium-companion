@@ -60,12 +60,13 @@ order is not.
 | Target | Build env support | Application code | Verification state |
 |---|---|---|---|
 | Windows x86_64 (dev host) | ✅ Godot editor installed | ✅ runs | render/audio untested in CI |
-| Android arm64 | ❌ no SDK/NDK/device | ⚙️ written | **unverified** |
+| Android arm64 | ⚠️ SDK+emulator present (x86_64 AVD); no physical arm64 device | ✅ builds | **APK builds + installs + launches on x86_64 emulator; physical arm64 unverified** |
 | macOS arm64 | ❌ no macOS host | ⚙️ written | **unverified** |
 | Linux x86_64 | ❌ no Linux host | ⚙️ written | **unverified** |
 
-Export presets for all three are authored in `app/export_presets.cfg` but no export has been
-produced or installed. This is recorded, not papered over.
+Export presets for all three are authored in `app/export_presets.cfg`. The Android APK has
+been built (Gradle/AGP via the pinned export templates, JDK 17) and smoke-tested on an emulator;
+macOS/Linux have not been built. This is recorded, not papered over.
 
 ## Reference-project audit (brief §2, checked 2026-10-23)
 

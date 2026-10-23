@@ -7,7 +7,10 @@ produced or installed.
 ## Status (honest)
 
 - Application code targets Android (see `app/export_presets.cfg`, Mobile/GL Compatibility renderer).
-- **Unverified:** no Android SDK, no ADB, no arm64 device in this environment.
+- **APK builds and installs** on the local Android Studio emulator (x86_64 AVD `Medium_Phone_API_37.0`,
+  verified 2026-10-23): Gradle/AGP via the pinned export templates, JDK 17, ETC2/ASTC enabled.
+- **Unverified:** physical arm64 device, microphone, audio focus/routing, AEC, thermal/power,
+  Android Keystore. No arm64 device in this environment.
 
 ## Requirements to complete Gate 6 (Android)
 

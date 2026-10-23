@@ -13,16 +13,36 @@ build.
 
 ## Android (sideloadable APK)
 
-```sh
-# 1. Install Android SDK/NDK; point Godot at them (Editor > Editor Settings > Export > Android).
-# 2. Generate a keystore (keep it OUT of source control):
-keytool -genkey -v -keystore ~/niobium.keystore -alias niobium -keyalg RSA -keysize 2048 -validity 10000
-# 3. In export preset Android > Keystore, set the release/debug keystore + alias + passwords.
-# 4. Export APK (arm64-v8a).
-```
+Verified working 2026-10-23 (build + install on local emulator). Exact procedure:
 
-- Never commit `*.keystore`, `*.jks`, or passwords. See `.gitignore`.
-- Install with `adb install build/android/Niobium.apk`.
+1. **JDK 17** (required — Gradle 8.11.1 cannot run on JDK 25). Set Godot's
+   `export/android/java_sdk_path` to a JDK 17 install (Temurin 17 works).
+2. **Export templates** installed at `%APPDATA%\Godot\export_templates\4.7.2.stable\`.
+3. **Android build template** installed into the project (`res://android/build/`), i.e. extract
+   `android_source.zip` from the templates and write a `.build_version` file (content
+   `4.7.2.stable`) at `res://android/.build_version`. This is the "Install Android Build
+   Template" step; `app/android/` is gitignored (reproducible from the pinned templates).
+4. **ETC2/ASTC** texture compression enabled (`rendering/textures/vram_compression/import_etc2_astc=true`).
+5. Debug keystore at `~/.android/debug.keystore` (alias `androiddebugkey`, password `android`).
+6. Build:
+
+   ```sh
+   godot --headless --path app --export-debug "Android" "build/android/Niobium.apk"
+   ```
+
+7. Install: `adb install -r build/android/Niobium.apk`.
+
+Notes:
+- First build downloads Gradle/AGP/Maven deps (~minutes). Gradle `clean` can fail to delete its
+  `android/build/build` output when the repo lives under **OneDrive** (Files On-Demand). Fix:
+  `attrib +P /S /D` then `cmd /c rmdir /s /q` on the stale dir.
+- **Required:** a `.gdignore` file at `res://android/.gdignore` (empty) so Godot's import scanner
+  skips the build template. Without it, Godot imports the generated `icon.webp` launcher icons
+  and writes `.webp.import` files that break AAPT ("file name must end with .xml or .png").
+- Emulator: `-gpu host` is required (SwiftShader's GL uniform limit breaks Godot's canvas shader);
+  `-no-window` mode does not update the `screencap` framebuffer — use a window, or the emulator
+  console `adb emu screenrecord screenshot <hostpath>` for a live capture.
+- The keystore and its password stay **out of source control**. See `.gitignore`.
 
 ## macOS (arm64)
 

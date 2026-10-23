@@ -66,11 +66,8 @@ func set_bone_pose_rotation_quat(bone: String, q: Quaternion) -> void:
 
 
 func reset_pose() -> void:
-	for b in _bone_index:
-		var idx: int = _bone_index[b]
-		skeleton.set_bone_pose_rotation(idx, Quaternion.IDENTITY)
-		skeleton.set_bone_pose_position(idx, Vector3.ZERO)
-		skeleton.set_bone_pose_scale(idx, Vector3.ONE)
+	# Reset every bone's pose to its rest pose (identity pose would collapse the skeleton).
+	skeleton.reset_bone_poses()
 
 
 func _build_skeleton() -> void:
@@ -110,7 +107,7 @@ func _add_bone(name: String, rest: Vector3, parent: String) -> void:
 
 
 func _build_body() -> void:
-	var mat_body := _material(Color(0.09, 0.05, 0.14), 0.55)
+	var mat_body := _material(Color(0.20, 0.10, 0.30), 0.55)
 	# Torso (capsule spanning spine/chest).
 	_attach_capsule("Chest", Vector3(0, -0.05, 0), 0.20, 0.55, mat_body)
 	# Pelvis.
@@ -131,7 +128,7 @@ func _build_head() -> void:
 	head_mesh = MeshInstance3D.new()
 	head_mesh.set_name("Head")
 	head_mesh.mesh = _build_head_mesh(0.14)
-	head_mesh.material_override = _material(Color(0.12, 0.07, 0.18), 0.5)
+	head_mesh.material_override = _material(Color(0.24, 0.14, 0.34), 0.5)
 	var attach := _attach_node("Head", head_mesh, Transform3D(Basis.IDENTITY, Vector3(0, 0, 0)))
 
 

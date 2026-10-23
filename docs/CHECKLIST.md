@@ -32,7 +32,7 @@ Last updated: **2026-10-23**
 
 | Item | Status | Verification / evidence |
 |---|---|---|
-| Load a legitimately usable rigged 3D character | 🟡 | Procedural engineering rig (`app/scripts/rig/`), labelled temporary (not final art). `unit`: 21 humanoid bones, 8 face blend shapes, 4 camera anchors build headless. |
+| Load a legitimately usable rigged 3D character | ✅ | Procedural engineering rig (`app/scripts/rig/`), labelled temporary (not final art). `unit`: 21 bones, 8 face blend shapes, 4 camera anchors. **Rendered**: local Vulkan (RTX 5070 Ti) + Android emulator (x86_64) show the lit violet character. |
 | Bust ↔ full-body camera switch, one identity | 🟡 | Camera anchors + `set_camera_mode` implemented; `unit`-checked anchors exist; device render unverified. |
 | Blend breathing, blinking, gaze, a gesture, one expression | 🟡 | Layered `AnimationDirector`; `unit`: morph clamp [0,1], gesture lifecycle→neutral, blink L==R. Render unverified. |
 | Real provider credential → streamed response | 🟡 | OpenAI-compatible SSE adapter; `fixture`: parser fragmentation/UTF-8/tool deltas/errors. `live` unverified (no credentials). |
@@ -42,11 +42,12 @@ Last updated: **2026-10-23**
 | Save + restore conversation across restart | 🟡 | JSON store; `unit`: persistence + search index rebuild across reopen. |
 | Timing/frame-time/memory evidence | ⬜ | Requires device capture; harness in `docs/TIMING.md`. |
 
-**Slice status:** the app boots headless-clean (10-frame smoke test, no errors) and the
-offline pipeline (LLM stream → TTS → sequenced audio → sample-clock visemes → interruption →
-persistence) is exercised end-to-end by fixtures. What remains unverified is **rendering,
-audio output, and device/live behaviour** — none of which this environment can produce, and
-none of which is claimed.
+**Slice status:** the app boots headless-clean (10-frame smoke test, no errors), the offline
+pipeline (LLM stream → TTS → sequenced audio → sample-clock visemes → interruption →
+persistence) is exercised end-to-end by fixtures, and the **character renders on Android**
+(emulator x86_64) and on local Vulkan. What remains unverified is **audio output, microphone,
+speaker/AEC, and physical-arm64 device behaviour** — none of which this environment can produce,
+and none of which is claimed.
 
 ## Gate 2 — Production character and voice
 
@@ -91,7 +92,7 @@ none of which is claimed.
 
 | Item | Status | Verification / evidence |
 |---|---|---|
-| Android arm64 lifecycle/mic/safe-area/APK | ⬜ | No Android SDK/device in build env. |
+| Android arm64 lifecycle/mic/safe-area/APK | 🟡 | APK builds (Gradle/JDK17), installs + launches + **renders the character** on emulator (x86_64). Physical arm64 device, mic, audio-routing, AEC still unverified. |
 | macOS arm64 native export/signing | ⬜ | No macOS hardware. |
 | Linux x86_64 package/audio/GPU | ⬜ | No Linux target in build env (Windows host). |
 | Optional private sync / worker | ⬜ | |

@@ -7,6 +7,11 @@ app/.godot/imported/
 app/.godot/shader_cache/
 app/.godot/uid_cache.bin
 
+# Godot Android build template — generated from the pinned export templates
+# ("Install Android Build Template"); reproducible and ~200 MB of AARs.
+# The small `app/android/.gdignore` + `.build_version` files ARE tracked (needed to build).
+app/android/build/
+
 # Export / build outputs
 app/build/
 app/export/
